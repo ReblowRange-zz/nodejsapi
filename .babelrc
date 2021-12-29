@@ -6,6 +6,7 @@
         [
             "@babel/plugin-transform-async-to-generator",
             {"regenerator": true }
-        ]
+        ],
+        ["@babel/plugin-proposal-decorators", {"legacy" : true}]
     ]
 }

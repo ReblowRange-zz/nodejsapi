@@ -1,3 +1,5 @@
+import {promisify} from 'util';
+
 console.log("===================== Starting Concepts =====================");
 /* Delay with promisify */
 const delayPromise = (seconds) =>
@@ -36,10 +38,13 @@ const callbackWithError = (seconds, callback) => {
   setTimeout(() => callback(null, `Completed callbackWithError `), seconds);
 };
 
-callbackWithError(3, (error, message) => {
+/* callbackWithError(3, (error, message) => {
   if (error) {
     console.error(error.message);
   } else {
     console.error(message);
   }
-});
+}); */
+
+const promisedDelay = promisify(callbackWithError);
+promisedDelay(1);

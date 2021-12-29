@@ -1,6 +1,8 @@
 # Scripts
 npx nodemon --exec npx babel-node src/server.js
 
+# Used libs
+    koa js
 # Requrable libs
 	"@hapi/boom": "^9.1.4",
     "@hapi/hapi": "^20.2.1",
