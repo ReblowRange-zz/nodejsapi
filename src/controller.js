@@ -1,4 +1,12 @@
-import { Get, Controller, KoaController, Post, Json, Koala } from "koa-joi-controllers";
+import {
+  Controller,
+  Get,
+  Json,
+  KoaController,
+  Post,
+} from "koa-joi-controllers";
+
+import { Report } from "./models";
 
 @Controller("/v1")
 export class RestController extends KoaController {
@@ -7,11 +15,13 @@ export class RestController extends KoaController {
     ctx.body = "Test rest";
   }
 
-  @Post("/createExportReport")
+  @Post("/createReport")
   @Json()
   async createExportReport(ctx) {
     const body = ctx.request.body; // incoming JSON data is in ctx.request.body
-    ctx.body = ctx.request.body;
-    process.stdout.write(`${JSON.stringify(body)}`);
+    const report = Report.fromJson(body);
+    console.log(report.name);
+    ctx.body = report;
+    // process.stdout.write(`${JSON.stringify(body)}`);
   }
 }

@@ -30,5 +30,5 @@ appServer.on("error", (err, ctx) => {
 });
 
 appServer.listen(PORT, () => {
-  stdout(`===== Server Started On PORT: ${PORT} ======`);
+  stdout(`===== Server Started On PORT: ${PORT} ======\n`);
 });
