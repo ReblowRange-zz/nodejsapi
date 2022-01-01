@@ -31,5 +31,10 @@
     "@types/koa-joi-router": "^8.0.3",
     "jsconfig.json": "^2.3.2",
     "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.json"
+    ]
   }
 }
