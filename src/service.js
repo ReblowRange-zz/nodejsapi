@@ -12,7 +12,8 @@ export const createReport = async (report) => {
 
   if (storeData) {
     const storeArr = JSON.parse(storeData);
-    report.report_template_id = storeArr.length + 1;
+    report.report_template_id =
+      storeArr[storeArr.length - 1].report_template_id + 1;
     storeArr.push(report);
     reportsArr = storeArr;
   } else {
@@ -31,8 +32,10 @@ export const updateReport = async (report) => {
   const storeData = await readStore(localStoreFile, "utf-8");
   if (storeData) {
     const storeArr = JSON.parse(storeData);
-    const index = storeArr.findIndex((x) => x.report_template_id === +report.report_template_id);
-    
+    const index = storeArr.findIndex(
+      (x) => x.report_template_id === +report.report_template_id
+    );
+
     if (storeArr[index]) {
       storeArr[index].name = report.name;
       storeArr[index].description = report.description;
@@ -51,27 +54,6 @@ export const updateReport = async (report) => {
   } else {
     throw new Error(`Nothing in store`);
   }
-/* 
-  // const reportPromise = promisify();
-  getReport(report.report_template_id, (rpt, index) => {
-    const storeData = readStore(localStoreFile, "utf-8");
-    if (storeData) {
-      const storeArr = JSON.parse(storeData);
-      const report = storeArr[index];
-      storeArr[index].name = report.name;
-      storeArr[index].description = report.description;
-      storeArr[index].email = report.email;
-      storeArr[index].report_format = report.report_format;
-      storeArr[index].from_date = report.from_date;
-      storeArr[index].to_date = report.to_date;
-      storeArr[index].timeZoneId = report.timeZoneId;
-      storeArr[index].user_id = report.user_id;
-      storeArr[index].visibility = report.visibility;
-
-      writeStore(localStoreFile, JSON.stringify(storeArr));
-      return { report: storeArr[index] };
-    }
-  }); */
 };
 
 export const getReport = async (reportId) => {
@@ -81,6 +63,23 @@ export const getReport = async (reportId) => {
     const report = storeArr.find((x) => x.report_template_id === +reportId);
     if (report) {
       return report;
+    } else {
+      throw new Error(`Report not found with id = ${reportId}`);
+    }
+  } else {
+    throw new Error(`Nothing in store`);
+  }
+};
+
+export const deleteReport = async (reportId) => {
+  const storeData = await readStore(localStoreFile, "utf-8");
+  if (storeData) {
+    const storeArr = JSON.parse(storeData);
+    const index = storeArr.findIndex((x) => x.report_template_id === +reportId);
+    if (index > -1) {
+      storeArr.splice(index, 1);
+      await writeStore(localStoreFile, JSON.stringify(storeArr));
+      return `Report Deleted with id ${reportId}`;
     } else {
       throw new Error(`Report not found with id = ${reportId}`);
     }

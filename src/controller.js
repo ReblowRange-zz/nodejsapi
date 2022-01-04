@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Json,
   KoaController,
@@ -28,17 +29,28 @@ export class RestController extends KoaController {
   @Post("/report")
   @Json()
   async updateExportReport(ctx) {
-    const body = ctx.request.body; // incoming JSON data is in ctx.request.body
+    const body = ctx.request.body;
     // const report = Report.fromJson(body);
     ctx.body = await RestService.updateReport(body);
   }
 
-  @Get("/getReport/:id")
+  @Get("/report/:id")
   async getReport(ctx) {
     try {
       const reportId = ctx.params.id;
       console.log(reportId);
       ctx.body = await RestService.getReport(reportId);
+    } catch (err) {
+      ctx.throw(500, err.message);
+    }
+  }
+
+  @Delete("/report/:id")
+  async deleteReport(ctx) {
+    try {
+      const reportId = ctx.params.id;
+      console.log(reportId);
+      ctx.body = await RestService.deleteReport(reportId);
     } catch (err) {
       ctx.throw(500, err.message);
     }

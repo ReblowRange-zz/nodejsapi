@@ -20,7 +20,7 @@ configureRoutes(appServer, [new RestController()]);
  */
 appServer.on("error", (err, ctx) => {
   console.log("---------------------server error", err, ctx);
-  // ctx.throw(401, err.message);
+  ctx.throw(401, err.message);
 });
 
 appServer.listen(PORT, () => {

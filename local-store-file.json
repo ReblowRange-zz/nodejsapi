@@ -12,18 +12,6 @@
     "visibility": "fis:pune:%"
   },
   {
-    "name": "Test report 2",
-    "description": "Test create ",
-    "email": "test@test.cv",
-    "report_format": "ESI XML",
-    "from_date": "30Dec2021",
-    "to_date": null,
-    "timeZoneId": null,
-    "user_id": "fis:pune:swapnil",
-    "visibility": "fis:pune:%",
-    "report_template_id": 2
-  },
-  {
     "name": "Updated name",
     "description": "Updated Desc ",
     "email": "test@test.cv",
@@ -34,5 +22,17 @@
     "user_id": "fis:pune:swapnil",
     "visibility": "fis:pune:%",
     "report_template_id": 3
+  },
+  {
+    "name": "Test report next",
+    "description": "Test create ",
+    "email": "test@test.cv",
+    "report_format": "ESI XML",
+    "from_date": "30Dec2021",
+    "to_date": null,
+    "timeZoneId": null,
+    "user_id": "fis:pune:swapnil",
+    "visibility": "fis:pune:%",
+    "report_template_id": 5
   }
 ]
