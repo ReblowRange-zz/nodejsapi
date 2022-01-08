@@ -2,13 +2,14 @@ import Koa from "koa";
 import { configureRoutes } from "koa-joi-controllers";
 import { RestController } from "./controller";
 import { stdout } from "single-line-log2";
+import { registerWithEureka } from "./eureka-client";
 
 /* ************** Import End *********************/
 const appServer = new Koa();
 
 stdout(`=============== Starting server ===============`);
 const PORT = process.env.PORT || 3000;
-configureRoutes(appServer, [new RestController()]);
+configureRoutes(appServer, [new RestController()], "export");
 
 /* For every error */
 /* appServer.on("error", (err) => {
@@ -26,3 +27,5 @@ appServer.on("error", (err, ctx) => {
 appServer.listen(PORT, () => {
   stdout(`===== Server Started On PORT: ${PORT} ======\n`);
 });
+
+registerWithEureka(PORT);
