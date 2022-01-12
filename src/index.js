@@ -3,18 +3,24 @@ import { configureRoutes } from "koa-joi-controllers";
 import { RestController } from "./controller";
 import { stdout } from "single-line-log2";
 import { registerWithEureka } from "./eureka-client";
+import { dbConnection } from "./dao/db-connnection";
+import { createProduct } from "./dao/product-dao";
 
 /* ************** Import End *********************/
+var enableEurekaRegistry = false;
 const appServer = new Koa();
 
 stdout(`=============== Starting server ===============`);
 const PORT = process.env.PORT || 3000;
 configureRoutes(appServer, [new RestController()], "export");
 
-/* For every error */
-/* appServer.on("error", (err) => {
-  console.error("server error", err);
-}); */
+dbConnection
+  .authenticate()
+  .then(() => {
+    console.log(`\nConnection has been established successfully.`);
+    createProduct();
+  })
+  .catch((error) => console.error(`Unable to connect to the database:`, error));
 
 /* If an error is in the req/res cycle and it is not possible to respond to the client,
  * the Context instance is also passed
@@ -28,4 +34,7 @@ appServer.listen(PORT, () => {
   stdout(`===== Server Started On PORT: ${PORT} ======\n`);
 });
 
-registerWithEureka(PORT);
+if (enableEurekaRegistry) {
+  console.log(`enableEurekaRegistry is Enabled`);
+  registerWithEureka(PORT);
+}
