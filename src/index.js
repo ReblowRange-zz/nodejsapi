@@ -1,24 +1,28 @@
-import Koa from "koa";
-import { configureRoutes } from "koa-joi-controllers";
-import { RestController } from "./controller";
-import { stdout } from "single-line-log2";
-import { registerWithEureka } from "./eureka-client";
-import { dbConnection } from "./dao/db-connnection";
-import { createProduct } from "./dao/product-dao";
+import Koa from 'koa';
+import { configureRoutes } from 'koa-joi-controllers';
+import { stdout } from 'single-line-log2';
+
+import { ENABLE_EUREKA_SERVICE_REGISTRY, SERVER_PORT } from './config/config';
+import { registerWithEureka } from './config/eureka-client-config';
+import { RestController } from './controllers/controller';
+import { ProductController } from './controllers/product-controller';
+import { dbConnection } from './dao/db-connnection';
 
 /* ************** Import End *********************/
-var enableEurekaRegistry = false;
+const enableEurekaRegistry = ENABLE_EUREKA_SERVICE_REGISTRY === "true";
 const appServer = new Koa();
 
 stdout(`=============== Starting server ===============`);
-const PORT = process.env.PORT || 3000;
-configureRoutes(appServer, [new RestController()], "export");
+const PORT = SERVER_PORT;
+
+const controllers = [new RestController(), new ProductController()];
+configureRoutes(appServer, controllers, "rest/v1");
 
 dbConnection
   .authenticate()
   .then(() => {
-    console.log(`\nConnection has been established successfully.`);
-    createProduct();
+    console.log(`\n Database Connection Works`);
+    // createProduct();
   })
   .catch((error) => console.error(`Unable to connect to the database:`, error));
 

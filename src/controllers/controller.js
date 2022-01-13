@@ -8,10 +8,10 @@ import {
   Put
 } from "koa-joi-controllers";
 
-import { Report } from "./models";
-import * as RestService from "./service";
+import { Report } from "../models/models";
+import * as RestService from "../services/service";
 
-@Controller("/v1")
+@Controller()
 export class RestController extends KoaController {
   @Get("/test")
   async test(ctx) {
