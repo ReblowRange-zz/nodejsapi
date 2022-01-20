@@ -15,6 +15,8 @@ import * as ProductService from '../services/product-service';
     @Json()
     async createProduct(ctx) {
       const body = ctx.request.body; 
+      // ctx.response.headers("Access-Control-Allow-Origin", "*");
+      ctx.set('Access-Control-Allow-Origin', '*');
       // const product = Product.fromJson(body);
       ctx.body = await ProductService.createProduct(body);
     }
