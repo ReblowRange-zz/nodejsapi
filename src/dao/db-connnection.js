@@ -1,4 +1,4 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Sequelize, Model } = require("sequelize");
 import { DB_NAME, DB_USER, DB_PASS } from "../config/config";
 
 export const dbConnection = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
@@ -28,5 +28,26 @@ ProductDetailsORM.init(
     sequelize: dbConnection,
     modelName: "product_details",
     freezeTableName: true, // Model tableName will be the same as the model name
+  }
+);
+
+export class UserDetailsORM extends Model {}
+UserDetailsORM.init(
+  {
+    aadharNo: Sequelize.STRING,
+    firstName: Sequelize.STRING,
+    middleName: Sequelize.STRING,
+    lastName: Sequelize.STRING,
+    dateOfBirth: Sequelize.DATE(6), // DATETIME(6) for mysql 5.6.4+. Fractional seconds support with up to 6 digits of preciin
+    gender: Sequelize.STRING,
+    address: Sequelize.STRING,
+    postalCode: Sequelize.STRING,
+    mobileNo: Sequelize.STRING,
+    password: Sequelize.STRING,
+  },
+  {
+    sequelize: dbConnection,
+    modelName: "user_details",
+    freezeTableName: true,
   }
 );
