@@ -34,6 +34,11 @@ ProductDetailsORM.init(
 export class UserDetailsORM extends Model {}
 UserDetailsORM.init(
   {
+    id: {
+      primaryKey: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
     aadharNo: Sequelize.STRING,
     firstName: Sequelize.STRING,
     middleName: Sequelize.STRING,
@@ -50,4 +55,73 @@ UserDetailsORM.init(
     modelName: "user_details",
     freezeTableName: true,
   }
+);
+
+export class ElectionDetailsORM extends Model {}
+ElectionDetailsORM.init(
+  {
+    id: {
+      primaryKey: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
+    electionOf: Sequelize.STRING,
+    electionDate: Sequelize.DATE(6), // DATETIME(6) for mysql 5.6.4+. Fractional seconds support with up to 6 digits of preciin
+  },
+  {
+    sequelize: dbConnection,
+    modelName: "election_details",
+    freezeTableName: true,
+  }
+);
+
+export class CandidateDetailsORM extends Model {}
+CandidateDetailsORM.init(
+  {
+    id: {
+      primaryKey: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
+    name: Sequelize.STRING,
+    surName: Sequelize.STRING,
+    partyName: Sequelize.STRING,
+    cadidateMobile: Sequelize.STRING,
+  },
+  {
+    sequelize: dbConnection,
+    modelName: "candidate_details",
+    freezeTableName: true,
+  }
+);
+
+export class VotingDetailsORM extends Model {}
+VotingDetailsORM.init(
+  {
+    id: {
+      primaryKey: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
+    electionId: Sequelize.UUID,
+    electionName: Sequelize.STRING,
+    voterId: Sequelize.STRING,
+    voterName: Sequelize.STRING,
+    votedToId: Sequelize.UUID,
+    candidatename: Sequelize.STRING,
+  },
+  {
+    sequelize: dbConnection,
+    modelName: "voting_details",
+    freezeTableName: true,
+  }
+);
+
+ElectionDetailsORM.CandidateDetailsORM = ElectionDetailsORM.hasMany(
+  CandidateDetailsORM,
+  { as: "candidates" }
+);
+CandidateDetailsORM.ElectionDetailsORM = CandidateDetailsORM.belongsTo(
+  ElectionDetailsORM,
+  { as: "election" }
 );

@@ -1,17 +1,16 @@
 "use strict";
-import cors from "@koa/cors";
-import Koa from "koa";
-import { configureRoutes } from "koa-joi-controllers";
-import { stdout } from "single-line-log2";
+import cors from '@koa/cors';
+import Koa from 'koa';
+import { configureRoutes } from 'koa-joi-controllers';
+import { stdout } from 'single-line-log2';
 
-import { ENABLE_EUREKA_SERVICE_REGISTRY, SERVER_PORT } from "./config/config";
-import { registerWithEureka } from "./config/eureka-client-config";
-import { AuthController } from "./controllers/auth-controller";
-import { RestController } from "./controllers/controller";
-import { ProductController } from "./controllers/product-controller";
-import { dbConnection } from "./dao/db-connnection";
-import { serverErrorHandler } from "./utils/utils";
-import { errorHandler } from "koa-better-error-handler";
+import { ENABLE_EUREKA_SERVICE_REGISTRY, SERVER_PORT } from './config/config';
+import { registerWithEureka } from './config/eureka-client-config';
+import { AuthController } from './controllers/auth-controller';
+import { RestController } from './controllers/controller';
+import { ElectionController } from './controllers/election-controller';
+import { ProductController } from './controllers/product-controller';
+import { dbConnection } from './dao/db-connnection';
 
 const debug = false;
 const port = 4000;
@@ -27,9 +26,8 @@ const PORT = SERVER_PORT;
 const controllers = [
   new AuthController(),
   new RestController(),
-  new ProductController(),
 ];
-
+configureRoutes(appServer, controllers, "export/v1");
 // appServer.context.onerror = errorHandler();
 
 appServer.use(
@@ -38,7 +36,7 @@ appServer.use(
   })
 );
 
-configureRoutes(appServer, controllers, "rest/v1");
+
 
 dbConnection
   .authenticate()
@@ -51,27 +49,11 @@ dbConnection
 /* If an error is in the req/res cycle and it is not possible to respond to the client,
  * the Context instance is also passed
  */
-/* appServer.on("error", (err, ctx) => {
-  console.log("server error <========= ");
-  // ctx.status = err.statusCode || err.status || 500;
-  // ctx.app.emit('error', err, ctx);
-  // ctx.body = { msg: err.message };
-  // ctx.throw(500, 'error');
+ appServer.on("error", (err, ctx) => {
   ctx.body = err;
   console.log("=========> server error ", err, ctx);
-}); */
+});
 
-/* appServer.use(async (ctx, next) => {
-  try {
-    await next();
-  } catch (err) {
-    err.status = err.statusCode || err.status || 500;
-    ctx.body = err.message;
-    ctx.app.emit('error', err, ctx);
-  }
-}); */
-
-// appServer.use(serverErrorHandler);
 
 appServer.listen(PORT, () => {
   stdout(`===== Server Started On PORT: ${PORT} ======\n`);

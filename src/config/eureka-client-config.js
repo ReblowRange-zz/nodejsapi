@@ -3,8 +3,8 @@ import Eureka from "eureka-js-client";
 const eurekaHost =
   process.env.EUREKA_CLIENT_SERVICEURL_DEFAULTZONE || "127.0.0.1";
 const eurekaPort = 8761;
-const hostName = process.env.HOSTNAME || "IM-FROM-Node-JS";
-const ipAddr = "172.0.0.1";
+const hostName = process.env.HOSTNAME || "localhost";
+const ipAddr = "0.0.0.0";
 const microServiceIntanceName = 'node-js-micro-export'
 
 export const registerWithEureka = function(PORT) {
